@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mul Biotech Farms — Indian Agricultural Intelligence Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,900&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+  :root{
+    --indigo:#16323F;
+    --indigo-2:#1E4150;
+    --paper:#EBE6D8;
+    --paper-2:#F5F1E7;
+    --ink:#20211C;
+    --ink-soft:#5C5D52;
+    --teal:#2C7A8C;
+    --blueRabi:#3D5A80;
+    --turmeric:#DFA425;
+    --green:#5B7A3F;
+    --laterite:#B15A38;
+    --line:#CFC8B4;
+    --line-dk:#3A5563;
+    --mono:'IBM Plex Mono',monospace;
+    --sans:'Inter',sans-serif;
+    --disp:'Fraunces',serif;
+  }
+
+  html{scroll-behavior:smooth}
+  body{font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 1.75rem}
+
+  nav{position:sticky;top:0;z-index:50;background:var(--indigo);border-bottom:1px solid var(--line-dk)}
+  .nav-in{max-width:1080px;margin:0 auto;padding:0 1.75rem;height:56px;display:flex;align-items:center;justify-content:space-between}
+  .brand{display:flex;align-items:center;gap:.6rem;text-decoration:none}
+  .brand-mark{width:22px;height:22px;flex-shrink:0}
+  .brand-txt{font-family:var(--mono);font-size:.74rem;font-weight:600;letter-spacing:.1em;color:var(--paper)}
+  .brand-txt b{color:var(--turmeric);font-weight:600}
+  .nav-links{display:flex;gap:1.6rem}
+  .nav-links a{font-size:.78rem;color:#9FB4BC;text-decoration:none;letter-spacing:.02em;transition:color .18s}
+  .nav-links a:hover{color:var(--turmeric)}
+
+  .hero{background:var(--indigo);color:var(--paper);padding:4.5rem 0 0}
+  .hero-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:3rem;align-items:center}
+  .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--turmeric);margin-bottom:1.1rem;display:flex;align-items:center;gap:.6rem}
+  .eyebrow::before{content:"";width:26px;height:1px;background:var(--turmeric)}
+  .hero h1{font-family:var(--disp);font-weight:400;font-size:clamp(2.4rem,5.2vw,4rem);line-height:1.04;letter-spacing:-.01em;margin-bottom:1.3rem}
+  .hero h1 em{font-style:italic;color:var(--turmeric)}
+  .hero-lead{font-size:1.02rem;color:#B7C6CC;max-width:30rem;margin-bottom:2rem;font-weight:400}
+  .hero-actions{display:flex;gap:.8rem;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.7rem 1.35rem;border-radius:2px;font-size:.85rem;font-weight:500;text-decoration:none;transition:all .18s;border:1px solid transparent;cursor:pointer;font-family:var(--sans)}
+  .btn-solid{background:var(--turmeric);color:var(--indigo);font-weight:600}
+  .btn-solid:hover{background:#EDB63A}
+  .btn-ghost{border-color:var(--line-dk);color:var(--paper)}
+  .btn-ghost:hover{border-color:var(--turmeric);color:var(--turmeric)}
+
+  .stamp{border:1px solid var(--line-dk);background:var(--indigo-2);padding:1.4rem}
+  .stamp-top{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px dashed var(--line-dk);padding-bottom:.8rem;margin-bottom:.9rem}
+  .stamp-top .t{font-family:var(--mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:#8AA3AB}
+  .stamp-rows{display:flex;flex-direction:column;gap:.7rem}
+  .srow{display:flex;justify-content:space-between;align-items:baseline}
+  .srow .k{font-size:.82rem;color:#B7C6CC}
+  .srow .v{font-family:var(--mono);font-size:1.05rem;font-weight:600;color:var(--paper)}
+  .srow .v.hl{color:var(--turmeric)}
+
+  .ribbon-sec{background:var(--indigo);padding:3rem 0 3.5rem}
+  .ribbon-label{font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:#8AA3AB;text-align:center;margin-bottom:1.1rem}
+  .ribbon{display:flex;border:1px solid var(--line-dk);border-radius:3px;overflow:hidden}
+  .rseg{padding:.85rem .5rem;text-align:center}
+  .rseg .s-name{font-family:var(--disp);font-style:italic;font-size:1rem;color:var(--paper);margin-bottom:.15rem}
+  .rseg .s-mon{font-family:var(--mono);font-size:.6rem;letter-spacing:.06em;color:rgba(255,255,255,.7)}
+  .rseg.kharif{background:var(--teal);flex:5}
+  .rseg.rabi{background:var(--blueRabi);flex:5}
+  .rseg.zaid{background:var(--turmeric);flex:3}
+  .rseg.zaid .s-name,.rseg.zaid .s-mon{color:#3A2A08}
+  .ribbon-foot{display:flex;justify-content:center;gap:1.4rem;margin-top:1rem;flex-wrap:wrap}
+  .rfoot-item{display:flex;align-items:center;gap:.4rem;font-size:.72rem;color:#9FB4BC}
+  .rfoot-dot{width:9px;height:9px;border-radius:2px}
+
+  section{padding:4.5rem 0}
+  .sec-head{margin-bottom:2.6rem;max-width:40rem}
+  .sec-num{font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;color:var(--laterite);font-weight:600}
+  .sec-head h2{font-family:var(--disp);font-weight:400;font-size:2rem;line-height:1.15;margin:.35rem 0 .6rem;letter-spacing:-.01em}
+  .sec-head p{font-size:.95rem;color:var(--ink-soft)}
+  .paper-2{background:var(--paper-2)}
+  code{font-family:var(--mono);font-size:.86em;background:rgba(0,0,0,.05);padding:.1em .35em;border-radius:2px}
+
+  .tabs{display:inline-flex;border:1px solid var(--line);border-radius:3px;overflow:hidden;margin-bottom:1.4rem;background:var(--paper-2)}
+  .tab{padding:.55rem 1.15rem;font-size:.8rem;font-weight:500;background:transparent;border:none;border-right:1px solid var(--line);cursor:pointer;color:var(--ink-soft);font-family:var(--sans);transition:all .15s}
+  .tab:last-child{border-right:none}
+  .tab.on{background:var(--indigo);color:var(--paper)}
+  .tab:hover:not(.on){background:#E4DECD}
+
+  .screen{border:1px solid var(--line-dk);border-radius:5px;overflow:hidden;background:var(--indigo)}
+  .screen-bar{background:#112730;padding:.55rem .9rem;display:flex;align-items:center;gap:.45rem;border-bottom:1px solid var(--line-dk)}
+  .sd{width:9px;height:9px;border-radius:50%}
+  .screen-file{font-family:var(--mono);font-size:.68rem;color:#6E8992;margin-left:.5rem}
+  .screen-body{position:relative;padding-bottom:56%}
+  .screen-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;gap:1.1rem;background:radial-gradient(circle at 50% 40%,#1E4150,#132A34)}
+  .screen-emoji{font-size:2.6rem}
+  .screen-inner p{font-size:.85rem;color:#A9BEC5;max-width:30rem;line-height:1.65}
+  .screen-inner .open{display:inline-flex;align-items:center;gap:.4rem;padding:.6rem 1.3rem;background:var(--turmeric);color:var(--indigo);border-radius:2px;font-size:.82rem;font-weight:600;text-decoration:none}
+  .screen-inner .open:hover{background:#EDB63A}
+  .note{margin-top:1rem;font-size:.8rem;color:var(--ink-soft);border-left:2px solid var(--turmeric);padding:.5rem .85rem;background:rgba(223,164,37,.08)}
+
+  .ledger{border:1px solid var(--line);background:var(--paper-2)}
+  .ledger-row{display:grid;grid-template-columns:auto 1fr auto;gap:1rem;align-items:center;padding:1rem 1.25rem;border-bottom:1px solid var(--line)}
+  .ledger-row:last-child{border-bottom:none}
+  .ledger-row:hover{background:#EFEADC}
+  .lr-tag{font-family:var(--mono);font-size:.6rem;font-weight:600;padding:.2rem .5rem;border-radius:2px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+  .lr-tag.dim{background:var(--green);color:#fff}
+  .lr-tag.fact{background:var(--turmeric);color:#3A2A08}
+  .lr-main .lr-name{font-family:var(--mono);font-size:.9rem;font-weight:600;margin-bottom:.15rem}
+  .lr-main .lr-cols{font-size:.76rem;color:var(--ink-soft);line-height:1.4}
+  .lr-count{font-family:var(--disp);font-size:1.5rem;font-weight:500;color:var(--indigo);text-align:right;line-height:1}
+  .lr-count small{display:block;font-family:var(--mono);font-size:.58rem;font-weight:400;color:var(--ink-soft);letter-spacing:.05em;text-transform:uppercase;margin-top:.25rem}
+  .schema-hint{margin-top:1rem;font-family:var(--mono);font-size:.72rem;color:var(--ink-soft);text-align:center}
+  .schema-hint b{color:var(--green)}
+
+  .flow{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+  .node{background:var(--paper-2);padding:1.3rem 1.2rem}
+  .node:hover{background:#EFEADC}
+  .node-n{font-family:var(--mono);font-size:.64rem;letter-spacing:.1em;color:var(--laterite);font-weight:600}
+  .node h4{font-family:var(--disp);font-weight:500;font-size:1.05rem;margin:.4rem 0 .45rem}
+  .node p{font-size:.8rem;color:var(--ink-soft);margin-bottom:.7rem}
+  .node .file{font-family:var(--mono);font-size:.68rem;color:var(--teal);word-break:break-all}
+
+  .assets{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem}
+  .asset{border:1px solid var(--line);background:var(--paper-2);padding:1.25rem;display:flex;flex-direction:column;gap:.55rem}
+  .asset:hover{border-color:var(--ink-soft)}
+  .asset-top{display:flex;align-items:center;gap:.6rem}
+  .asset-emoji{font-size:1.2rem}
+  .asset-name{font-family:var(--mono);font-size:.76rem;font-weight:600;word-break:break-all}
+  .asset-desc{font-size:.79rem;color:var(--ink-soft);flex:1}
+  .asset-foot{display:flex;justify-content:space-between;align-items:center;padding-top:.3rem}
+  .asset-size{font-family:var(--mono);font-size:.66rem;color:#9A9A85}
+  .asset-dl{font-size:.75rem;font-weight:600;color:var(--teal);text-decoration:none}
+  .asset-dl:hover{color:var(--indigo)}
+
+  .team{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:1rem}
+  .member{border:1px solid var(--line);background:var(--paper-2);padding:1.25rem}
+  .member:hover{border-color:var(--ink-soft)}
+  .m-avatar{width:42px;height:42px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:600;font-size:.9rem;color:#fff;margin-bottom:.8rem}
+  .m-name{font-weight:600;font-size:.92rem;margin-bottom:.15rem}
+  .m-role{font-size:.77rem;color:var(--ink-soft)}
+  .m-mentor{border-color:var(--turmeric);background:rgba(223,164,37,.07)}
+
+  .steps{display:flex;flex-direction:column;gap:1.6rem}
+  .step{display:grid;grid-template-columns:auto 1fr;gap:1rem;align-items:start}
+  .step-n{font-family:var(--mono);font-size:.78rem;font-weight:600;color:var(--paper);background:var(--green);width:27px;height:27px;border-radius:3px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.15rem}
+  .step h4{font-size:.92rem;font-weight:600;margin-bottom:.3rem}
+  .step p{font-size:.82rem;color:var(--ink-soft)}
+  .code{background:var(--indigo);border-radius:4px;padding:1rem 1.2rem;margin-top:.7rem;overflow-x:auto}
+  .code pre{font-family:var(--mono);font-size:.77rem;color:#C6DDD4;line-height:1.7}
+  .code .c{color:#6E8992}
+  .code .g{color:var(--turmeric)}
+
+  footer{background:var(--indigo);color:#8AA3AB;border-top:1px solid var(--line-dk);padding:2.4rem 0}
+  .foot-grid{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
+  .foot-brand{font-family:var(--disp);font-style:italic;font-size:1.15rem;color:var(--paper)}
+  .foot-meta{font-size:.76rem;line-height:1.7;text-align:right}
+  .foot-meta a{color:var(--turmeric);text-decoration:none}
+
+  @media(max-width:760px){
+    .hero-grid{grid-template-columns:1fr;gap:2rem}
+    .nav-links{display:none}
+    .ledger-row{grid-template-columns:auto 1fr;gap:.7rem}
+    .lr-count{grid-column:2;text-align:left;font-size:1.2rem;margin-top:.3rem}
+    .foot-grid{flex-direction:column;text-align:center}
+    .foot-meta{text-align:center}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-in">
+    <a class="brand" href="#top">
+      <svg class="brand-mark" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2C12 2 12 8 12 12M12 12C12 12 7 9 5 11C5 11 8 15 12 14M12 12C12 12 17 9 19 11C19 11 16 15 12 14M12 14V22" stroke="#DFA425" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      <span class="brand-txt"><b>28 STATES</b> · AGRI INTEL</span>
+    </a>
+    <div class="nav-links">
+      <a href="#dashboard">Dashboards</a>
+      <a href="#model">Data Model</a>
+      <a href="#pipeline">Pipeline</a>
+      <a href="#assets">Assets</a>
+      <a href="#team">Team</a>
+      <a href="#setup">Setup</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <p class="eyebrow">Mul Biotech Farms · 2026</p>
+        <h1>An almanac of <em>crops, water &amp; risk</em> across India</h1>
+        <p class="hero-lead">A resource-intelligence dashboard covering every Indian state — crop calendars, water footprints, irrigation risk, and structured field research, all built on one clean data model.</p>
+        <div class="hero-actions">
+          <a class="btn btn-solid" href="#dashboard">Open the dashboards</a>
+          <a class="btn btn-ghost" href="#model">See the data model</a>
+        </div>
+      </div>
+      <div class="stamp">
+        <div class="stamp-top">
+          <span class="t">Project Ledger</span>
+          <span class="t">Mul Biotech Farms · 2026</span>
+        </div>
+        <div class="stamp-rows">
+          <div class="srow"><span class="k">States mapped</span><span class="v hl">28</span></div>
+          <div class="srow"><span class="k">Mandi price records</span><span class="v">91,000+</span></div>
+          <div class="srow"><span class="k">Crop timeline entries</span><span class="v">511</span></div>
+          <div class="srow"><span class="k">Relational tables</span><span class="v">6</span></div>
+          <div class="srow"><span class="k">Data issues resolved</span><span class="v hl">87</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ribbon-sec">
+    <div class="wrap">
+      <p class="ribbon-label">The cropping calendar this dataset is built around</p>
+      <div class="ribbon">
+        <div class="rseg kharif">
+          <div class="s-name">Kharif</div>
+          <div class="s-mon">JUN · JUL · AUG · SEP · OCT</div>
+        </div>
+        <div class="rseg rabi">
+          <div class="s-name">Rabi</div>
+          <div class="s-mon">OCT · NOV · DEC · JAN · FEB · MAR</div>
+        </div>
+        <div class="rseg zaid">
+          <div class="s-name">Zaid</div>
+          <div class="s-mon">MAR · APR · MAY</div>
+        </div>
+      </div>
+      <div class="ribbon-foot">
+        <div class="rfoot-item"><span class="rfoot-dot" style="background:#2C7A8C"></span>Kharif — monsoon crops (rice, cotton, maize)</div>
+        <div class="rfoot-item"><span class="rfoot-dot" style="background:#3D5A80"></span>Rabi — winter crops (wheat, mustard, gram)</div>
+        <div class="rfoot-item"><span class="rfoot-dot" style="background:#DFA425"></span>Zaid — summer crops (melon, fodder)</div>
+        <div class="rfoot-item"><span class="rfoot-dot" style="background:#5B7A3F"></span>Perennial — tree &amp; plantation</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="dashboard">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">01 — LIVE REPORTS</span>
+      <h2>Three Power BI dashboards</h2>
+      <p>Select a report below. Each opens in Power BI — pick a state on the map to load its full agricultural dossier.</p>
+    </div>
+    <div class="tabs">
+      <button class="tab on" onclick="pick(this,'kartik')">Crop Water &amp; Resource</button>
+      <button class="tab" onclick="pick(this,'malvika')">Executive Commodity</button>
+      <button class="tab" onclick="pick(this,'lavanya')">Price Intelligence</button>
+    </div>
+    <div class="screen">
+      <div class="screen-bar">
+        <span class="sd" style="background:#E05A48"></span>
+        <span class="sd" style="background:#DFA425"></span>
+        <span class="sd" style="background:#5B7A3F"></span>
+        <span class="screen-file" id="scr-file">india_crop_water_resource_dashboard.pbix</span>
+      </div>
+      <div class="screen-body">
+        <div class="screen-inner">
+          <div class="screen-emoji">🌾</div>
+          <p>Hosted on the team's Power BI workspace. Public embedding is pending admin approval — until then, open the report directly.</p>
+          <a class="open" id="scr-open" href="https://app.powerbi.com/groups/me/reports/a0292903-1432-4493-9f5f-a8a94678a6e2" target="_blank" rel="noopener">↗ Open report</a>
+        </div>
+      </div>
+    </div>
+    <p class="note"><b>To embed:</b> once the report is published from an account with web-publish enabled, paste the iframe from <em>Power BI → Share → Embed</em> into <code>index.html</code> (replacing the placeholder above).</p>
+  </div>
+</section>
+
+<section id="model" class="paper-2">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">02 — ARCHITECTURE</span>
+      <h2>One dimension, five facts</h2>
+      <p>A star schema. Every fact table joins back to <code>dim_State</code> on the state name.</p>
+    </div>
+    <div class="ledger">
+      <div class="ledger-row">
+        <span class="lr-tag dim">Dim</span>
+        <div class="lr-main"><div class="lr-name">dim_State</div><div class="lr-cols">State · Region · Contributor · SourceSheet</div></div>
+        <div class="lr-count">28<small>rows</small></div>
+      </div>
+      <div class="ledger-row">
+        <span class="lr-tag fact">Fact</span>
+        <div class="lr-main"><div class="lr-name">fact_Risks</div><div class="lr-cols">RiskID · State · RiskType · Detail — 3 bullets per risk type</div></div>
+        <div class="lr-count">56<small>rows</small></div>
+      </div>
+      <div class="ledger-row">
+        <span class="lr-tag fact">Fact</span>
+        <div class="lr-main"><div class="lr-name">fact_CropTimeline</div><div class="lr-cols">Crop · Season · Sowing/Harvest periods · month numbers</div></div>
+        <div class="lr-count">511<small>rows · 0 blank seasons</small></div>
+      </div>
+      <div class="ledger-row">
+        <span class="lr-tag fact">Fact</span>
+        <div class="lr-main"><div class="lr-name">fact_WaterEconomics</div><div class="lr-cols">Crop · Water footprint (L/kg) · Irrigation rank (1–8)</div></div>
+        <div class="lr-count">326<small>rows · 0 blanks</small></div>
+      </div>
+      <div class="ledger-row">
+        <span class="lr-tag fact">Fact</span>
+        <div class="lr-main"><div class="lr-name">fact_SWOT</div><div class="lr-cols">Category · Detail — one 8–12 word headline each</div></div>
+        <div class="lr-count">269<small>rows</small></div>
+      </div>
+      <div class="ledger-row">
+        <span class="lr-tag fact">Fact</span>
+        <div class="lr-main"><div class="lr-name">fact_AdvantagesConstraints</div><div class="lr-cols">Type · Detail — sharp phrases under 10 words</div></div>
+        <div class="lr-count">760<small>rows</small></div>
+      </div>
+    </div>
+    <p class="schema-hint">All relationships: <b>dim_State[State]</b> → fact tables · one-to-many</p>
+  </div>
+</section>
+
+<section id="pipeline">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">03 — ENGINEERING</span>
+      <h2>From raw sheets to a clean model</h2>
+      <p>Seven stages take multi-contributor research and scraped market data into one normalized workbook.</p>
+    </div>
+    <div class="flow">
+      <div class="node"><span class="node-n">STAGE 01</span><h4>Scrape</h4><p>Selenium headless Chrome pulls commodity prices from 30 state portals, clicking through pagination automatically.</p><div class="file">cloud_pipeline.py</div></div>
+      <div class="node"><span class="node-n">STAGE 02</span><h4>Sync</h4><p>Scraped CSV uploads to Google Drive via a service account. GitHub Actions runs it on a daily schedule.</p><div class="file">.github/workflows/scrape.yml</div></div>
+      <div class="node"><span class="node-n">STAGE 03</span><h4>Extract</h4><p>All 29 research sheets parsed into six structured tables, cached with pickle to skip repeat work.</p><div class="file">scripts/etl/</div></div>
+      <div class="node"><span class="node-n">STAGE 04</span><h4>Audit</h4><p>87 issues found: packed cells, LaTeX artifacts, junk placeholders, 65% blank seasons, missing states.</p><div class="file">scripts/fix_junk.py</div></div>
+      <div class="node"><span class="node-n">STAGE 05</span><h4>Season fill</h4><p>An 80+ crop knowledge base classifies every blank season into Kharif, Rabi, Zaid, or Perennial.</p><div class="file">scripts/season_classifier.py</div></div>
+      <div class="node"><span class="node-n">STAGE 06</span><h4>Water fill</h4><p>ICAR-based lookup tables fill 49 blank footprints and 70 blank irrigation ranks.</p><div class="file">scripts/water_profiles.py</div></div>
+      <div class="node"><span class="node-n">STAGE 07</span><h4>Normalize text</h4><p>Risks trimmed to 3 bullets, SWOT to 8–12 word headlines, advantages to under 10 words.</p><div class="file">scripts/text_compress.py</div></div>
+      <div class="node" style="background:#16323F"><span class="node-n" style="color:#DFA425">OUTPUT</span><h4 style="color:#EBE6D8">Clean workbook</h4><p style="color:#A9BEC5">Six Excel Table objects, zero blanks, zero junk — ready for Power BI.</p><div class="file" style="color:#DFA425">Custom_PowerBI_Agriculture_Model.xlsx</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="assets" class="paper-2">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">04 — REPOSITORY</span>
+      <h2>Everything is version-controlled</h2>
+      <p>Dashboards, datasets, scripts, and docs all live in the repo.</p>
+    </div>
+    <div class="assets">
+      <div class="asset">
+        <div class="asset-top"><span class="asset-emoji">📊</span><span class="asset-name">india_crop_water_resource_dashboard.pbix</span></div>
+        <p class="asset-desc">Crop water &amp; resource deep dive. Page 1: state dossier. Page 2: crop economics &amp; water sustainability.</p>
+        <div class="asset-foot"><span class="asset-size">1.3 MB · dashboard/</span><a class="asset-dl" href="dashboard/india_crop_water_resource_dashboard-kartik.pbix">↓ PBIX</a></div>
+      </div>
+      <div class="asset">
+        <div class="asset-top"><span class="asset-emoji">📊</span><span class="asset-name">executive_commodity_analysis.pbix</span></div>
+        <p class="asset-desc">Executive commodity analysis and state-level market intelligence report.</p>
+        <div class="asset-foot"><span class="asset-size">1.1 MB · dashboard/</span><a class="asset-dl" href="dashboard/executive_commodity_analysis-malvika.pbix">↓ PBIX</a></div>
+      </div>
+      <div class="asset">
+        <div class="asset-top"><span class="asset-emoji">📊</span><span class="asset-name">commodity_price_intelligence.pbix</span></div>
+        <p class="asset-desc">Commodity price intelligence and mandi market analytics across states.</p>
+        <div class="asset-foot"><span class="asset-size">1.1 MB · dashboard/</span><a class="asset-dl" href="dashboard/commodity_price_intelligence_dashboard-lavanya.pbix">↓ PBIX</a></div>
+      </div>
+      <div class="asset">
+        <div class="asset-top"><span class="asset-emoji">🗃️</span><span class="asset-name">Custom_PowerBI_Agriculture_Model.xlsx</span></div>
+        <p class="asset-desc">The normalized star-schema workbook. Six Excel Table objects, zero blanks across all tables.</p>
+        <div class="asset-foot"><span class="asset-size">~120 KB · data/</span><a class="asset-dl" href="data/Custom_PowerBI_Agriculture_Model.xlsx">↓ XLSX</a></div>
+      </div>
+      <div class="asset">
+        <div class="asset-top"><span class="asset-emoji">🗂️</span><span class="asset-name">State Assessment Dashboard Agriculture.xlsx</span></div>
+        <p class="asset-desc">The original 29-sheet research workbook from all four contributors, before cleaning.</p>
+        <div class="asset-foot"><span class="asset-size">523 KB · data/</span><a class="asset-dl" href="data/State Assessment Dashboard Agriculture.xlsx">↓ XLSX</a></div>
+      </div>
+      <div class="asset">
+        <div class="asset-top"><span class="asset-emoji">🐍</span><span class="asset-name">cloud_pipeline.py</span></div>
+        <p class="asset-desc">Selenium scraper plus Google Drive uploader. Pulls prices from 30 portals and syncs to the cloud.</p>
+        <div class="asset-foot"><span class="asset-size">6 KB · scripts/</span><a class="asset-dl" href="scripts/cloud_pipeline.py">↓ PY</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="team">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">05 — TEAM</span>
+      <h2>Four researchers, one mentor</h2>
+      <p>State research was split across the team; each of the three dashboards was built by a different contributor.</p>
+    </div>
+    <div class="team">
+      <div class="member"><div class="m-avatar" style="background:#5B7A3F">KP</div><div class="m-name">Kartik Patade</div><div class="m-role">Data engineering, ETL &amp; normalization pipeline, crop water &amp; resource dashboard</div></div>
+      <div class="member"><div class="m-avatar" style="background:#B15A38">NK</div><div class="m-name">Nada Khan</div><div class="m-role">State qualitative research</div></div>
+      <div class="member"><div class="m-avatar" style="background:#2C7A8C">LD</div><div class="m-name">Lavanya Dive</div><div class="m-role">State research · price intelligence dashboard</div></div>
+      <div class="member"><div class="m-avatar" style="background:#3D5A80">MN</div><div class="m-name">Malavika Nair</div><div class="m-role">State research · executive commodity dashboard</div></div>
+      <div class="member m-mentor"><div class="m-avatar" style="background:#DFA425;color:#3A2A08">SR</div><div class="m-name">Soumodip Atanu Roy</div><div class="m-role">Project Mentor · Mul Biotech Farms</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="setup" class="paper-2">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">06 — DOCUMENTATION</span>
+      <h2>Run it yourself</h2>
+      <p>Clone, install, scrape, and open the dashboards.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="step-n">1</div><div><h4>Clone the repository</h4><div class="code"><pre><span class="g">git clone</span> https://github.com/soumodip18/IRBAS-Agricultural-Intelligence-Dashboard.git
+<span class="g">cd</span> Automated-Agricultural-Intelligence-Pipeline</pre></div></div></div>
+      <div class="step"><div class="step-n">2</div><div><h4>Install dependencies</h4><div class="code"><pre><span class="g">pip install</span> selenium webdriver-manager pandas openpyxl \
+            google-auth google-api-python-client</pre></div></div></div>
+      <div class="step"><div class="step-n">3</div><div><h4>Add your Google Drive credentials</h4><p>Create a Google Cloud service account, download its JSON key, and store it as a GitHub Actions secret named <code>GCP_CREDENTIALS</code>. The scraper reads it at runtime.</p></div></div>
+      <div class="step"><div class="step-n">4</div><div><h4>Run the scraper</h4><div class="code"><pre><span class="c"># scrapes all 30 states, uploads the master CSV to Drive</span>
+<span class="g">python</span> scripts/cloud_pipeline.py</pre></div></div></div>
+      <div class="step"><div class="step-n">5</div><div><h4>Open a dashboard</h4><p>Download a <code>.pbix</code> from <code>dashboard/</code>, open it in Power BI Desktop, then point its source to <code>data/Custom_PowerBI_Agriculture_Model.xlsx</code> under <strong>Transform Data → Data Source Settings</strong>.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">Agricultural Intelligence · 28 States</div>
+      <div class="foot-meta">
+        Agriculture Intelligence · Mul Biotech Farms · 2026<br />
+        Mentor: Soumodip Atanu Roy · Mul Biotech Farms / SequestraBionix<br />
+        <a href="https://github.com/soumodip18/IRBAS-Agricultural-Intelligence-Dashboard">GitHub Repository</a> · MIT License
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const R = {
+    kartik:{file:'india_crop_water_resource_dashboard.pbix',url:'https://app.powerbi.com/groups/me/reports/a0292903-1432-4493-9f5f-a8a94678a6e2'},
+    malvika:{file:'executive_commodity_analysis.pbix',url:'https://app.powerbi.com/groups/me/reports/a0292903-1432-4493-9f5f-a8a94678a6e2'},
+    lavanya:{file:'commodity_price_intelligence_dashboard.pbix',url:'https://app.powerbi.com/groups/me/reports/a0292903-1432-4493-9f5f-a8a94678a6e2'}
+  };
+  function pick(btn,key){
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+    btn.classList.add('on');
+    document.getElementById('scr-file').textContent = R[key].file;
+    document.getElementById('scr-open').href = R[key].url;
+  }
+</script>
+</body>
+</html>
